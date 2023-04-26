@@ -3,14 +3,17 @@ package com.mmj.validation.presentation.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -70,17 +73,32 @@ fun LoginScreen(
                 .verticalScroll(rememberScrollState())
         ) {
 
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = colorWhite,
-                style = MaterialTheme.typography.displayMedium,
-                textAlign = TextAlign.Center,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .align(Alignment.TopCenter)
-                    .padding(top = 50.dp)
-                    .padding(horizontal = 16.dp)
-            )
+                    .padding(top = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_welcome),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .width(200.dp)
+                )
+
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    color = colorWhite,
+                    style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
+                        .padding(horizontal = 16.dp)
+                )
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

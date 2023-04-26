@@ -3,7 +3,7 @@ package com.mmj.validation.ui.theme
 import androidx.compose.ui.graphics.Color
 
 
-val colorBlue = Color(0xFF000063)
+val colorBlue = Color(0xFF6C63FF)
 val colorBlue1 = Color(0xFF001E63)
 val colorRed = Color(0xFFFF0000)
 val colorGreen = Color(0xFF003A00)
