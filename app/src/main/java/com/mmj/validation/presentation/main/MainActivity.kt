@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,6 +41,10 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.mmj.validation.R
 import com.mmj.validation.presentation.component.CustomTextFieldApp
 import com.mmj.validation.ui.theme.ValidationTheme
@@ -50,6 +58,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ValidationTheme {
                 LoginScreen(viewModel = viewModel)
@@ -63,147 +72,143 @@ class MainActivity : ComponentActivity() {
 fun LoginScreen(
     viewModel: MainViewModel
 ) {
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_welcome),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(200.dp)
+                    .width(200.dp)
+            )
+
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = colorWhite,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+
             Column(
-                modifier = Modifier.weight(1.0f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(top = 50.dp)
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(vertical = 16.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_welcome),
-                    contentDescription = null,
+                Text(
+                    text = "Email",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
-                        .height(200.dp)
-                        .width(200.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp)
+                )
+                CustomTextFieldApp(
+                    placeholder = "Email",
+                    onValueChange = {
+                        viewModel.onEvent(MainEvent.EmailChanged(it))
+                    },
+                    text = viewModel.formState.email,
+                    padding = 16.dp,
+                    isEmail = true,
+                    isDone = false,
+                    singleLine = true,
+                    isError = viewModel.formState.emailError != null,
+                    errorMessage = viewModel.formState.emailError,
                 )
 
                 Text(
-                    text = stringResource(id = R.string.app_name),
-                    color = colorWhite,
+                    text = "Password",
                     style = MaterialTheme.typography.labelLarge,
-                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
+                        .padding(vertical = 8.dp)
                 )
-            }
+                CustomTextFieldApp(
+                    placeholder = "Password",
+                    onValueChange = {
+                        viewModel.onEvent(MainEvent.PasswordChanged(it))
+                    },
+                    text = viewModel.formState.password,
+                    trailingIcon = {
+                        CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                            IconButton(
+                                onClick =
+                                {
+                                    viewModel.onEvent(MainEvent.VisiblePassword(!(viewModel.formState.isVisiblePassword)))
+                                }
+                            ) {
+                                Icon(
+                                    painter = if (viewModel.formState.isVisiblePassword) painterResource(
+                                        id = R.drawable.ic_visible
+                                    ) else painterResource(
+                                        id = R.drawable.ic_invisible
+                                    ),
+                                    contentDescription = "Visible",
+                                    tint = colorSilver,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    },
+                    isVisible = viewModel.formState.isVisiblePassword,
+                    padding = 16.dp,
+                    isPassword = true,
+                    isDone = true,
+                    singleLine = true,
+                    isError = viewModel.formState.passwordError != null,
+                    errorMessage = viewModel.formState.passwordError
+                )
 
-            Box(modifier = Modifier.weight(1.0f)) {
-                Column(
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.onEvent(MainEvent.Submit)
+                    },
+                    shape = RoundedCornerShape(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(vertical = 16.dp)
+                        .padding(horizontal = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 ) {
-                    Text(
-                        text = "Email",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 8.dp)
-                    )
-                    CustomTextFieldApp(
-                        placeholder = "Email",
-                        onValueChange = {
-                            viewModel.onEvent(MainEvent.EmailChanged(it))
-                        },
-                        text = viewModel.formState.email,
-                        padding = 16.dp,
-                        isEmail = true,
-                        isDone = false,
-                        singleLine = true,
-                        isError = viewModel.formState.emailError != null,
-                        errorMessage = viewModel.formState.emailError,
-                    )
-
-                    Text(
-                        text = "Password",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(vertical = 8.dp)
-                    )
-                    CustomTextFieldApp(
-                        placeholder = "Password",
-                        onValueChange = {
-                            viewModel.onEvent(MainEvent.PasswordChanged(it))
-                        },
-                        text = viewModel.formState.password,
-                        trailingIcon = {
-                            CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
-                                IconButton(
-                                    onClick =
-                                    {
-                                        viewModel.onEvent(MainEvent.VisiblePassword(!(viewModel.formState.isVisiblePassword)))
-                                    }
-                                ) {
-                                    Icon(
-                                        painter = if (viewModel.formState.isVisiblePassword) painterResource(
-                                            id = R.drawable.ic_visible
-                                        ) else painterResource(
-                                            id = R.drawable.ic_invisible
-                                        ),
-                                        contentDescription = "Visible",
-                                        tint = colorSilver,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
-                            }
-                        },
-                        isVisible = viewModel.formState.isVisiblePassword,
-                        padding = 16.dp,
-                        isPassword = true,
-                        isDone = true,
-                        singleLine = true,
-                        isError = viewModel.formState.passwordError != null,
-                        errorMessage = viewModel.formState.passwordError
-                    )
-
-                    Spacer(modifier = Modifier.padding(4.dp))
-
-                    Button(
-                        onClick = {
-                            viewModel.onEvent(MainEvent.Submit)
-                        },
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    ) {
-                        Text(text = "Login")
-                    }
-
+                    Text(text = "Login")
                 }
+
             }
 
-            Box(
-                modifier = Modifier.weight(1.0f).fillMaxWidth()
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextButton(
+                onClick = { },
             ) {
-                TextButton(
-                    onClick = { },
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                ) {
-                    Text(
-                        "Don't have account? Register",
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                Text(
+                    "Don't have account? Register",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

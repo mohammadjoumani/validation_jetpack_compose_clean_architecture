@@ -16,7 +16,8 @@
             android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Validation">
+            android:theme="@style/Theme.Validation"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
