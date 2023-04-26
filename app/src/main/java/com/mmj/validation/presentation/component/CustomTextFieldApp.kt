@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mmj.validation.core.functions.isNumber
 import com.mmj.validation.core.generic.UiText
-import com.mmj.validation.ui.theme.colorRed
 import com.mmj.validation.ui.theme.colorSilver
 
 
@@ -51,7 +49,6 @@ fun CustomTextFieldApp(
     trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = false,
     maxLine: Int = 1,
-//    height: Dp = AppSize.size50,
 ) {
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -94,22 +91,7 @@ fun CustomTextFieldApp(
             decorationBox = { innerTextField ->
                 Row(
                     modifier =
-                    if (isFocused) {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-//                            .height(50.dp)
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    } else if (isError) {
+                    if (isError) {
                         Modifier
                             .padding(horizontal = padding)
                             .border(
@@ -121,7 +103,20 @@ fun CustomTextFieldApp(
                                 color = MaterialTheme.colorScheme.surface,
                                 shape = RoundedCornerShape(8.dp)
                             )
-//                            .height(height)
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester)
+                    } else if (isFocused) {
+                        Modifier
+                            .padding(horizontal = padding)
+                            .border(
+                                width = 1.dp,
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            .background(
+                                color = MaterialTheme.colorScheme.surface,
+                                shape = RoundedCornerShape(8.dp)
+                            )
                             .fillMaxWidth()
                             .focusRequester(focusRequester)
                     } else {
@@ -136,7 +131,6 @@ fun CustomTextFieldApp(
                                 color = MaterialTheme.colorScheme.surface,
                                 shape = RoundedCornerShape(8.dp)
                             )
-//                            .height(height)
                             .fillMaxWidth()
                             .focusRequester(focusRequester)
                     },
