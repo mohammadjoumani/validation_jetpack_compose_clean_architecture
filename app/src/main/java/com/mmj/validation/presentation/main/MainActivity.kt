@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -37,20 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import com.mmj.validation.R
 import com.mmj.validation.presentation.component.CustomTextFieldApp
-import com.mmj.validation.ui.theme.ValidationTheme
-import com.mmj.validation.ui.theme.colorBlack
-import com.mmj.validation.ui.theme.colorSilver
-import com.mmj.validation.ui.theme.colorWhite
+import com.mmj.validation.presentation.ui.theme.ValidationTheme
+import com.mmj.validation.presentation.ui.theme.colorSilver
+import com.mmj.validation.presentation.ui.theme.colorWhite
 
 class MainActivity : ComponentActivity() {
 
@@ -72,7 +63,6 @@ class MainActivity : ComponentActivity() {
 fun LoginScreen(
     viewModel: MainViewModel
 ) {
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
@@ -93,7 +83,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = stringResource(id = R.string.app_name),
+                text = stringResource(id = R.string.strAppName),
                 color = colorWhite,
                 style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center,
@@ -113,7 +103,7 @@ fun LoginScreen(
                     .padding(vertical = 16.dp)
             ) {
                 Text(
-                    text = "Email",
+                    text = stringResource(id = R.string.strEmail),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
@@ -122,7 +112,7 @@ fun LoginScreen(
                         .padding(bottom = 8.dp)
                 )
                 CustomTextFieldApp(
-                    placeholder = "Email",
+                    placeholder = stringResource(id = R.string.strEmail),
                     onValueChange = {
                         viewModel.onEvent(MainEvent.EmailChanged(it))
                     },
@@ -136,7 +126,7 @@ fun LoginScreen(
                 )
 
                 Text(
-                    text = "Password",
+                    text = stringResource(id = R.string.strPassword),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
@@ -145,7 +135,7 @@ fun LoginScreen(
                         .padding(vertical = 8.dp)
                 )
                 CustomTextFieldApp(
-                    placeholder = "Password",
+                    placeholder = stringResource(id = R.string.strPassword),
                     onValueChange = {
                         viewModel.onEvent(MainEvent.PasswordChanged(it))
                     },
@@ -195,7 +185,7 @@ fun LoginScreen(
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
-                    Text(text = "Login")
+                    Text(text = stringResource(id = R.string.strLogin))
                 }
 
             }
@@ -205,7 +195,7 @@ fun LoginScreen(
                 onClick = { },
             ) {
                 Text(
-                    "Don't have account? Register",
+                    text = stringResource(id = R.string.strDontHaveAccount),
                     color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center
                 )

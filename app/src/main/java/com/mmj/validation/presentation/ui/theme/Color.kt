@@ -1,4 +1,4 @@
-package com.mmj.validation.ui.theme
+package com.mmj.validation.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

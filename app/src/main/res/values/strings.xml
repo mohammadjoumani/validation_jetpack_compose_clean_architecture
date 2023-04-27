@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">Validation With Clean Architecture</string>
+    <string name="strAppName">Validation With Clean Architecture</string>
+
+    <string name="strEmail">Email</string>
+    <string name="strPassword">Password</string>
+    <string name="strLogin">Login</string>
+    <string name="strDontHaveAccount">Don\'t have account? Register</string>
 
     <string name="strTheEmailCanNotBeBlank">The email can\'t be blank</string>
     <string name="strThatsNotAValidEmail">That\'s not a valid email</string>
@@ -9,5 +14,6 @@
 
     <string name="strThePhoneCanNotBeBlank">The phone can\'t be blank</string>
     <string name="strThePhoneNumberShouldBeContentJustDigit">The phone number should be content just digit</string>
+
 
 </resources>

@@ -1,4 +1,4 @@
-package com.mmj.validation.ui.theme
+package com.mmj.validation.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -7,7 +7,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-
 
 enum class AppTheme {
     Light, Dark, Default

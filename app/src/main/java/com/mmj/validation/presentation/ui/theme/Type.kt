@@ -1,4 +1,4 @@
-package com.mmj.validation.ui.theme
+package com.mmj.validation.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

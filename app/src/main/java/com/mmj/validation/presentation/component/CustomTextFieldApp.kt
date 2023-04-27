@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mmj.validation.core.functions.isNumber
 import com.mmj.validation.core.generic.UiText
-import com.mmj.validation.ui.theme.colorSilver
+import com.mmj.validation.presentation.ui.theme.colorSilver
 
 
 @Composable
