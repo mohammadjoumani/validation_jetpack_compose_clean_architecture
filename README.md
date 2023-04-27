@@ -6,9 +6,8 @@ Welcome to the Validation Jetpack Compose Clean Architecture GitHub repository!
 
 
 
-https://user-images.githubusercontent.com/53276286/234604200-ae82f211-68f1-4e85-8cd1-c0a8fb2be209.mp4
 
-
+https://user-images.githubusercontent.com/53276286/234814761-e47c122b-e63b-4cda-8fc3-606b14d0eb26.mp4
 
 
 
