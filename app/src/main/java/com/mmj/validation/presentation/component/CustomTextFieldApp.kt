@@ -4,7 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -89,51 +94,28 @@ fun CustomTextFieldApp(
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             decorationBox = { innerTextField ->
+                val borderColor =  if (isError) {
+                    MaterialTheme.colorScheme.error
+                } else if (isFocused) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                }
+
                 Row(
-                    modifier =
-                    if (isError) {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.error
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    } else if (isFocused) {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    } else {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    },
+                    modifier = Modifier
+                        .padding(horizontal = padding)
+                        .border(
+                            width = 1.dp,
+                            shape = RoundedCornerShape(8.dp),
+                            color = borderColor
+                        )
+                        .background(
+                            color = MaterialTheme.colorScheme.surface,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (leadingIcon != null) {
@@ -141,7 +123,9 @@ fun CustomTextFieldApp(
                     } else {
                         Spacer(modifier = Modifier.padding(8.dp))
                     }
-                    Box(modifier = Modifier.weight(1.0f).padding(vertical = 16.dp)) {
+                    Box(modifier = Modifier
+                        .weight(1.0f)
+                        .padding(vertical = 16.dp)) {
                         if (text.isEmpty()) {
                             Text(
                                 text = placeholder,
