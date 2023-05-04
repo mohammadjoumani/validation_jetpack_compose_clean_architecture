@@ -23,7 +23,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mmj.validation.core.functions.isNumber
 import com.mmj.validation.core.generic.UiText
@@ -33,37 +32,37 @@ import com.mmj.validation.presentation.ui.theme.colorSilver
 @Composable
 fun CustomTextFieldApp(
     placeholder: String,
-    onValueChange: (String) -> Unit = {},
-    padding: Dp = 16.dp,
-    errorMessage: UiText? = null,
     text: String = "",
+    onValueChange: (String) -> Unit = {},
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Done,
+    modifier: Modifier,
+    errorMessage: UiText? = null,
     isError: Boolean = false,
-    isPassword: Boolean = false,
-    isEmail: Boolean = false,
-    isText: Boolean = false,
-    isPhone: Boolean = false,
-    isNumber: Boolean = false,
-    isDone: Boolean = false,
     isVisible: Boolean = false,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = false,
     maxLine: Int = 1,
 ) {
+    val isKeyboardTypeNumber =
+        keyboardType == KeyboardType.Phone || keyboardType == KeyboardType.Number
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusRequester = remember {
         FocusRequester()
     }
+    val colorBorder = if (isError) MaterialTheme.colorScheme.error else if (isFocused)
+        MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
 
     Column {
         BasicTextField(
-            value = if (isPhone || isNumber) {
+            value = if (isKeyboardTypeNumber) {
                 if (isNumber(text)) text else ""
             } else text,
             onValueChange = {
-                if (isPhone || isNumber) {
+                if (isKeyboardTypeNumber) {
                     if (isNumber(it)) onValueChange(it)
                 } else onValueChange(it)
             },
@@ -72,76 +71,41 @@ fun CustomTextFieldApp(
             singleLine = singleLine,
             interactionSource = interactionSource,
             visualTransformation =
-            if (isPassword) {
+            if (keyboardType == KeyboardType.Password) {
                 if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
             } else {
                 VisualTransformation.None
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType =
-                if (isPassword) KeyboardType.Password
-                else if (isEmail) KeyboardType.Email
-                else if (isText) KeyboardType.Text
-                else if (isPhone) KeyboardType.Phone
-                else if (isNumber) KeyboardType.Number
-                else KeyboardType.Text,
-                imeAction = if (isDone) ImeAction.Done else ImeAction.Next
+                keyboardType = keyboardType,
+                imeAction = imeAction
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             decorationBox = { innerTextField ->
                 Row(
-                    modifier =
-                    if (isError) {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.error
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    } else if (isFocused) {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    } else {
-                        Modifier
-                            .padding(horizontal = padding)
-                            .border(
-                                width = 1.dp,
-                                shape = RoundedCornerShape(8.dp),
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester)
-                    },
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier
+                        .border(
+                            width = 1.dp,
+                            shape = RoundedCornerShape(8.dp),
+                            color = colorBorder
+                        )
+                        .background(
+                            color = MaterialTheme.colorScheme.surface,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .focusRequester(focusRequester)
                 ) {
                     if (leadingIcon != null) {
                         leadingIcon()
                     } else {
                         Spacer(modifier = Modifier.padding(8.dp))
                     }
-                    Box(modifier = Modifier.weight(1.0f).padding(vertical = 16.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1.0f)
+                            .padding(vertical = 16.dp)
+                    ) {
                         if (text.isEmpty()) {
                             Text(
                                 text = placeholder,
@@ -165,9 +129,7 @@ fun CustomTextFieldApp(
             text = if (isError) errorMessage!!.asString(context) else "",
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = padding)
+            modifier = modifier
         )
     }
 }

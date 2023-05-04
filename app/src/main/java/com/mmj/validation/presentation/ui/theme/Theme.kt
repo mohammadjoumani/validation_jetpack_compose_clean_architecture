@@ -46,7 +46,6 @@ fun ValidationTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-
     val colorScheme = when (appTheme) {
         AppTheme.Default -> {
             if (isDarkMode) {
@@ -55,9 +54,11 @@ fun ValidationTheme(
                 LightColorScheme
             }
         }
+
         AppTheme.Light -> {
             LightColorScheme
         }
+
         AppTheme.Dark -> {
             DarkColorScheme
         }

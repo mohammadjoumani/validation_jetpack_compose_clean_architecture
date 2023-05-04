@@ -35,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mmj.validation.R
@@ -113,13 +115,13 @@ fun LoginScreen(
                 )
                 CustomTextFieldApp(
                     placeholder = stringResource(id = R.string.strEmail),
+                    text = viewModel.formState.email,
                     onValueChange = {
                         viewModel.onEvent(MainEvent.EmailChanged(it))
                     },
-                    text = viewModel.formState.email,
-                    padding = 16.dp,
-                    isEmail = true,
-                    isDone = false,
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     singleLine = true,
                     isError = viewModel.formState.emailError != null,
                     errorMessage = viewModel.formState.emailError,
@@ -136,10 +138,12 @@ fun LoginScreen(
                 )
                 CustomTextFieldApp(
                     placeholder = stringResource(id = R.string.strPassword),
+                    text = viewModel.formState.password,
                     onValueChange = {
                         viewModel.onEvent(MainEvent.PasswordChanged(it))
                     },
-                    text = viewModel.formState.password,
+                    keyboardType = KeyboardType.Password,
+                    ImeAction.Done,
                     trailingIcon = {
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             IconButton(
@@ -162,9 +166,7 @@ fun LoginScreen(
                         }
                     },
                     isVisible = viewModel.formState.isVisiblePassword,
-                    padding = 16.dp,
-                    isPassword = true,
-                    isDone = true,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     singleLine = true,
                     isError = viewModel.formState.passwordError != null,
                     errorMessage = viewModel.formState.passwordError
