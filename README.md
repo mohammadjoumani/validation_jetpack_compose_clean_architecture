@@ -13,4 +13,4 @@ https://user-images.githubusercontent.com/53276286/234814761-e47c122b-e63b-4cda-
 
 
 
-[Click here to read medium artical](https://medium.com/@mohammadjoumani/multi-theme-in-jetpack-compose-db2eb7d4d187)
+[Click here to read medium artical](https://medium.com/@mohammadjoumani/input-validation-with-clean-architecture-in-jetpack-compose-4225e2e86397)
